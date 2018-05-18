@@ -13,7 +13,15 @@ invsaw.formspec =       "size[11,10]"..fancy_inv..
 			"field[0.3,3.5;1,1;max_offered;Max:;%s]" ..
 			"button[1,3.2;1,1;Set;Set]" ..
 			"list[detached:invsaw_%s;output;2.8,0;8,6;]" ..
-			"list[current_player;main;1.5,6.25;8,4;]"
+			"list[current_player;main;1.5,6.25;8,4;]" ..
+			"listring[detached:invsaw_%s;output]" ..
+			"listring[current_player;main]" ..
+			"listring[detached:invsaw_%s;input]" ..
+			"listring[current_player;main]" ..
+			"listring[detached:invsaw_%s;micro]" ..
+			"listring[current_player;main]" ..
+			"listring[detached:invsaw_%s;recycle]" ..
+			"listring[current_player;main]"
 
 invsaw.nosawformspec =  "size[5,2]"..
 			"label[0,0;You don't have a circular saw in your inventory!\nYou need to have one in order to use this function.]"..
@@ -204,7 +212,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 		local creative = minetest.setting_getbool("creative_mode") or minetest.check_player_privs(name,{creative=true})
 		local havesaw = player:get_inventory():contains_item("main","moreblocks:circular_saw")
 		if havesaw or creative then
-			minetest.show_formspec(name,"invsaw:saw",string.format(invsaw.formspec,name,name,name,invsaw.users[name].max_offered,name))
+			minetest.show_formspec(name,"invsaw:saw",string.format(invsaw.formspec,name,name,name,invsaw.users[name].max_offered,name,name,name,name,name))
 		else
 			minetest.show_formspec(name,"invsaw:nosaw",invsaw.nosawformspec)
 		end
@@ -212,7 +220,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 	elseif formname == "invsaw:saw" and fields.Set then
 		invsaw.users[name].max_offered = tonumber(fields.max_offered) or 99
 		invsaw.update_inventory(invsaw.users[name].inv,name,0)
-		minetest.show_formspec(name,"invsaw:saw",string.format(invsaw.formspec,name,name,name,invsaw.users[name].max_offered,name))
+		minetest.show_formspec(name,"invsaw:saw",string.format(invsaw.formspec,name,name,name,invsaw.users[name].max_offered,name,name,name,name,name))
 		return true
 	else
 		return false
